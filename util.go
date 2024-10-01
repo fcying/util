@@ -5,7 +5,6 @@ import (
 	"runtime"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/term"
 )
 
@@ -40,7 +39,7 @@ func TimeStart(key string) {
 func TimeEnd(key string, text string) uint32 {
 	delay := uint32(time.Since(timeStart[key]) / 1000000)
 	if text != "0" {
-		log.Infof("%s %d ms%s", key, delay, text)
+		Log.Infof("%s %d ms%s", key, delay, text)
 	}
 	delete(timeStart, key)
 

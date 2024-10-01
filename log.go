@@ -19,6 +19,7 @@ const (
 )
 
 var (
+	Log              *log.Logger
 	logTag           string
 	logCallback      UiLogCallback    = nil
 	progressCallback ProgressCallback = nil
@@ -87,14 +88,19 @@ func (uw *uiWriter) Write(p []byte) (n int, err error) {
 }
 
 func LogInit(logFile *os.File) {
-	log.SetFormatter(&customFormatter{})
-	log.SetLevel(log.DebugLevel)
+	Log = log.New()
+	Log.SetFormatter(&customFormatter{})
+	Log.SetLevel(log.DebugLevel)
 
 	var mw io.Writer
+	writers := []io.Writer{&uiWriter{}}
+
 	if logFile != nil {
-		mw = io.MultiWriter(logFile, os.Stdout, &uiWriter{})
-	} else {
-		mw = io.MultiWriter(os.Stdout, &uiWriter{})
+		writers = append(writers, logFile)
 	}
-	log.SetOutput(mw)
+	if IsInteractive() {
+		writers = append(writers, os.Stdout)
+	}
+	mw = io.MultiWriter(writers...)
+	Log.SetOutput(mw)
 }
