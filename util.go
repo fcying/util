@@ -46,17 +46,6 @@ func TimeEnd(key string, text string) uint32 {
 	return delay
 }
 
-func StrLen(buf []byte) int {
-	strCnt := 0
-	for _, v := range buf {
-		if v == 0 {
-			break
-		}
-		strCnt++
-	}
-	return strCnt
-}
-
 func IsInteractive() bool {
 	return term.IsTerminal(int(os.Stdin.Fd()))
 }

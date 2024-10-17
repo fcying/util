@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"time"
@@ -103,4 +104,22 @@ func LogInit(logFile *os.File) {
 	}
 	mw = io.MultiWriter(writers...)
 	Log.SetOutput(mw)
+}
+
+func DumpBuffer(data []byte, colum int, hex bool) {
+	out := ""
+	for i, d := range data {
+		if hex {
+			out = out + fmt.Sprintf("0x%02x,", d)
+		} else {
+			out = out + fmt.Sprintf("%d,", d)
+		}
+		if ((i + 1) % colum) == 0 {
+			Log.Println(out)
+			out = ""
+		}
+	}
+	if out != "" {
+		Log.Println(out)
+	}
 }
