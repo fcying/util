@@ -36,9 +36,14 @@ func TimeStart(key string) {
 	timeStart[key] = time.Now()
 }
 
+func TimeDelay(key string) uint32 {
+	delay := uint32(time.Since(timeStart[key]) / 1000000)
+	return delay
+}
+
 func TimeEnd(key string, text string) uint32 {
 	delay := uint32(time.Since(timeStart[key]) / 1000000)
-	if text != "0" {
+	if text != "NULL" {
 		Log.Infof("%s %d ms%s", key, delay, text)
 	}
 	delete(timeStart, key)
