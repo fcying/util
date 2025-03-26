@@ -24,6 +24,7 @@ var (
 	logTag           string
 	logCallback      UiLogCallback    = nil
 	progressCallback ProgressCallback = nil
+	timeFormat                        = "15:04:05"
 )
 
 type UiLogCallback func(string, string)
@@ -43,12 +44,16 @@ func SetProgress(en bool) {
 	}
 }
 
+func SetTimeFormat(new string) {
+	timeFormat = new
+}
+
 type customFormatter struct {
 	log.TextFormatter
 }
 
 func (f *customFormatter) Format(entry *log.Entry) ([]byte, error) {
-	timestamp := time.Now().Format("15:04:05")
+	timestamp := time.Now().Format(timeFormat)
 
 	switch entry.Level {
 	case log.TraceLevel:
